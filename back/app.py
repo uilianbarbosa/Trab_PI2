@@ -41,7 +41,7 @@ class Jogo(db.Model):
 @app.route('/jogos')
 @cross_origin()
 def cadastro():
-    # obtém todos os registros da tabela filmes em ordem de titulo
+    # obtém todos os registros da tabela jogos em ordem de titulo
     jogos = Jogo.query.order_by(Jogo.titulo).all()
     # converte a lista de jogos para o formato JSON
     # list comprehensions
@@ -54,20 +54,16 @@ def inclusao():
     #converte os dados que vierem em formato JSON no objeto jogo
     jogo = Jogo.from_json(request.json)
 
-    # se campo tiver algum conteúdo
-    # if !filme.titulo or !filme.genero or !filme.duracao or !filme.nota
-
-    # if '' or 0 in filme.to_json().values()
-
+    # se algum campo não tiver conteúdo
     # list comprehensions
     erros = [campo for campo, valor in jogo.to_json().items()
-             if valor == '']
+            if valor == '']
 
     # em Python, JS... 0 => False; qualquer valor (exceto 0) => True
     if len(erros):
         return jsonify({'id': 0, 'message': ','.join(erros) + ' deve(m) ser preenchido(s)'}), 400
 
-    db.session.add(jogo) # adiciona o objeto filme na tabela
+    db.session.add(jogo) # adiciona o objeto jogo na tabela
     db.session.commit() # persiste os dados
     return jsonify(jogo.to_json()), 201
 
@@ -115,10 +111,10 @@ def exclui(id):
 @app.route('/jogos/pesq/<palavra>')
 @cross_origin()
 def pesquisa(palavra):
-    # obtém todos os registros da tabela filmes em ordem de titulo
+    # obtém todos os registros da tabela jogos em ordem de titulo
     jogos = Jogo.query.order_by(Jogo.titulo).filter(
         Jogo.titulo.like(f'%{palavra}%')).all()
-    # converte a lista de filmes para o formato JSON (list comprehensions)
+    # converte a lista de jogos para o formato JSON (list comprehensions)
     return jsonify([jogo.to_json() for jogo in jogos])
 
 
