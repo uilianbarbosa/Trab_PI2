@@ -1,0 +1,16 @@
+.grid {
+    background-color: rgb(108, 108, 114);
+    max-width: 1366px;
+}
+
+.form1 {
+    margin-top: -10px;
+}
+
+.list {
+    margin-top: 7px;
+}
+
+.img {
+    height: 249px;
+}

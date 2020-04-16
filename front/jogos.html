@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <title>Meus Jogos</title>
+    <!-- Vue JS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- Axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app" class="container grid">
+        <!-- Menu Superior -->
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">
+                <img src="jogo3.png" width="30" height="30" class="d-inline-block align-top" alt="Cinema"> Meus Jogos Favoritos
+            </a>
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                <form class="form-inline">
+                    <input class="form-control form-control-sm mr-sm-2" type="text" v-model="filtro" @keyup="pesquisar" placeholder="Pesquisa">
+                    <button class="btn btn-secondary btn-sm" @click.prevent="listar">Todos</button>
+                </form>
+            </nav>
+        </nav>
+
+        <div class="mt-2">
+            <div class="row">
+
+                <!-- Formulário -->
+                <div class="col-sm-4">
+                    <p v-if="erros.length" class="text-danger small">
+                        <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
+                        <ul>
+                            <li v-for="erro in erros" class="text-danger small">{{ erro }}</li>
+                        </ul>
+                    </p>
+                    <div class="card form1">
+                        <h5 class="card-header">Cadastro de Jogos</h5>
+                        <div class="card-body">
+                            <form @submit.prevent="salvar">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="titulo" ref="titulo" v-model="jogo.titulo" placeholder="Título do Jogo">
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="genero" v-model="jogo.genero" placeholder="Gênero">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="classificacao" v-model="jogo.classificacao" placeholder="Classificação">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="plataforma" v-model="jogo.plataforma" placeholder="Plataforma">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="btn-group w-100" role="group">
+                                    <input type="submit" class="btn btn-secondary" value='Salvar'>
+                                    <input type="reset" class="btn btn-dark" value='Limpar'>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <img src="jogos.jpeg" alt="Cinema" class="img-fluid mx-auto d-block w-100 mt-2 img">
+                </div>
+
+                <!-- Listagem -->
+                <div class="col-sm-8">
+                    <div class="card list">
+                        <h5 class="card-header">Lista de Jogos Cadastrados
+                            <span v-if="filtro">
+                                [Filtro: '{{filtro}}']
+                            </span>
+                        </h5>
+                        <div class="card-body">
+                            <table class="table table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Cód.</th>
+                                        <th>Título</th>
+                                        <th>Gênero</th>
+                                        <th>Classificação</th>
+                                        <th>Plataforma</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="jogo in jogos" v-bind:key="jogo.id">
+                                        <td>{{jogo.id}}</td>
+                                        <td>{{jogo.titulo}}</td>
+                                        <td>{{jogo.genero}}</td>
+                                        <td>{{jogo.classificacao}}</td>
+                                        <td>{{jogo.plataforma}}</td>
+                                        <td>
+                                            <button class="btn btn-secondary btn-sm" title="Alterar" @click="editar(jogo.id)">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-dark btn-sm" title="Excluir" @click="excluir(jogo.id, jogo.titulo)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="jogos.js"></script>
+</body>
+
+</html>
